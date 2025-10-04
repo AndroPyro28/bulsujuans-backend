@@ -1,12 +1,41 @@
 {
   "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "dev": "bun run --hot src/index.ts"
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndroPyro28/bulsujuans-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/AndroPyro28/bulsujuans-backend/issues"
+  },
+  "homepage": "https://github.com/AndroPyro28/bulsujuans-backend#readme",
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.6.2",
+    "dotenv": "^17.2.3",
+    "eslint": "^9.37.0",
+    "express": "^5.1.0",
+    "install": "^0.13.0",
+    "nodemon": "^3.1.10",
+    "npm": "^11.6.1",
+    "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "hono": "^4.9.9"
-  },
-  "devDependencies": {
-    "@types/bun": "latest"
+    "cors": "^2.8.5",
+    "socket.io": "^4.8.1",
+    "zod": "^4.1.11"
   }
 }
