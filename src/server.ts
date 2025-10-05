@@ -1,24 +1,26 @@
-import './lib//config/dotenv'
-import express, {Application} from 'express';
-import cors from 'cors'
-import http from "http"
-import { initilizeSocket } from './lib/utils'
-import apiRouter from './api';
-const app:Application = express()
+import "./lib//config/dotenv";
+import express, { Application } from "express";
+import cors from "cors";
+import http from "http";
+import { initilizeSocket } from "./lib/utils";
+import apiRouter from "./api";
+const app: Application = express();
 
-app.use(cors({
-    origin:"*",
-    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"]
-}))
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
+  })
+);
 
-app.use(express.json())
+app.use(express.json());
 
-app.use('/api', apiRouter)
+app.use("/api", apiRouter);
 
-const server = http.createServer(app)
-const PORT = process.env.PORT
-server.listen(PORT, () => console.info(`server listening on port ${PORT}`)) 
+const server = http.createServer(app);
+const PORT = process.env.PORT;
+server.listen(PORT, () => console.info(`server listening on port ${PORT}`));
 
-const io = initilizeSocket(server)
+const io = initilizeSocket(server);
 
-export { io }
+export { io };

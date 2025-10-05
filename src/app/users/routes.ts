@@ -1,10 +1,11 @@
-import {Router} from "express";
-import UserController from './controllers';
+import { Router } from "express";
+import UserController from "./controllers";
 import validate from "../../lib/zod-validator";
 
 const router: Router = Router();
 
-const userController = new UserController()
+const userController = new UserController();
 
-router.post("/", userController.create.bind(userController))
-export default router
+router.get("/", userController.create);
+
+export default router;
