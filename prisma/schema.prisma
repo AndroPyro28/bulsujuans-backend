@@ -33,11 +33,12 @@ model User {
 model Credential {
   id         String  @id @default(cuid())
   student_id String  @unique
+  email      String  @unique
   password   String?
-
   user User?
 
-  access_token String
+  access_token String @db.LongText
+  refresh_token String @db.LongText
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

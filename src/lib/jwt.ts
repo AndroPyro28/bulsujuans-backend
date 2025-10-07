@@ -5,14 +5,14 @@ export const generateOtp = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-export const hashPassword = async (password: string) => {
+export const hash = async (value: string) => {
   const saltRounds = 10;
-  const hash = await bcrypt.hash(password, saltRounds);
+  const hash = await bcrypt.hash(value, saltRounds);
   return hash;
 };
 
-export const comparePassword = async (password: string, hash: string) => {
-  return await bcrypt.compare(password, hash);
+export const compare = async (rawValue: string, hashedValue: string) => {
+  return await bcrypt.compare(rawValue, hashedValue);
 };
 
 interface GenerateJwtTokenParams {
@@ -31,7 +31,6 @@ export const generateJwtToken = async ({
   const saltRounds = 10;
   const salt = await bcrypt.genSalt(saltRounds);
   const hashedOtp = await bcrypt.hash(otp, salt);
-
   const payload = {
     email,
     studentId,
@@ -57,4 +56,28 @@ export const decodeJwtToken = (token: string, jwtSecret: string): DecodedToken |
     console.error("Invalid or expired token:", error);
     return null;
   }
+};
+
+
+interface GenerateUserTokenParams {
+  id: string;
+  email: string;
+  studentId: string;
+  jwtSecret: string;
+  expiresIn: "15m" | "1d"; // access token and refresh token
+}
+
+export const generateUserToken = async ({
+  id,
+  email,
+  studentId,
+  jwtSecret,
+  expiresIn,
+}: GenerateUserTokenParams): Promise<string> => {
+  const payload = {
+    id,
+    email,
+    studentId,
+  }
+  return jwt.sign(payload, jwtSecret, { expiresIn }); // optional expiration
 };
