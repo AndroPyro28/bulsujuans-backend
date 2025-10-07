@@ -70,7 +70,7 @@ const TicketAccessData: Prisma.AccessCreateInput[] = [
 ];
 
 const ProfileAccessData: Prisma.AccessCreateInput[] = [
-  ...generateAccessTemplate("prodile", ["view_profile", "edit_profile", "change_password"]),
+  ...generateAccessTemplate("profile", ["view_profile", "edit_profile", "change_password"]),
 ];
 
 const AdminAccessData: Prisma.AccessCreateInput[] = [
