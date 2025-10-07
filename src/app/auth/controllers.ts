@@ -52,10 +52,10 @@ class AuthController {
           firstName: user?.first_name,
           otp,
         };
-        const reminderContent = template(replacement);
+        const requestOtpContent = template(replacement);
         sendMail({
-          content: reminderContent,
-          subject: "Welcome",
+          content: requestOtpContent,
+          subject: "One Time Password",
           emailTo: user?.email as string,
         });
 
