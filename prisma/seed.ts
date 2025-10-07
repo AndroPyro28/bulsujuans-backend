@@ -1,5 +1,5 @@
 import { PrismaClient, Role, Prisma, User } from "@prisma/client";
-import { hashPassword } from "../src/lib/hash-password";
+import { hashPassword } from "../src/lib/jwt";
 const prisma = new PrismaClient();
 
 /* SETUP USER */
@@ -8,30 +8,35 @@ const userData: {
   first_name: string;
   middle_name: string;
   last_name: string;
+  student_id: string;
 }[] = [
   {
     email: "doe.admin@gmail.com",
     first_name: "John",
     middle_name: "Michael",
     last_name: "Doe",
+    student_id: "1001",
   },
   {
     email: "sarah.student@example.com",
     first_name: "Sarah",
     middle_name: "Anne",
     last_name: "Smith",
+    student_id: "1002",
   },
   {
     email: "matthew.teacher@example.com",
     first_name: "Matthew",
     middle_name: "Ryan",
     last_name: "Jones",
+    student_id: "1003",
   },
   {
     email: "emily.nonteacher@example.com",
     first_name: "Emily",
     middle_name: "Grace",
     last_name: "Brown",
+    student_id: "1004",
   },
 ];
 
@@ -57,28 +62,21 @@ const roleData: Prisma.RoleCreateInput[] = [
 /* SETUP ACCECSS */
 
 const ComplaintAccessData: Prisma.AccessCreateInput[] = [
-  ...generateAccessTemplate("complaint", ["view_list_page", "view_detail_page", "create", "edit", "delete"]),
+  ...generateAccessTemplate("complaint", ["view_list", "view_detail", "create", "edit", "delete"]),
 ];
 
 const TicketAccessData: Prisma.AccessCreateInput[] = [
-  ...generateAccessTemplate("tickets", ["view_list_page", "view_detail_page", "edit", "delete", "export_file"]),
+  ...generateAccessTemplate("tickets", ["view_list", "view_detail", "edit", "delete", "export_file"]),
 ];
 
 const ProfileAccessData: Prisma.AccessCreateInput[] = [
-  ...generateAccessTemplate("prodile", ["view_profile_page", "edit_profile", "change_password"]),
+  ...generateAccessTemplate("prodile", ["view_profile", "edit_profile", "change_password"]),
 ];
 
 const AdminAccessData: Prisma.AccessCreateInput[] = [
-  ...generateAccessTemplate("users", ["view_list_page", "view_detail_page", "create", "edit", "delete", "export_file"]),
-  ...generateAccessTemplate("roles", ["view_list_page", "view_detail_page", "create", "edit", "delete", "export_file"]),
-  ...generateAccessTemplate("access", [
-    "view_list_page",
-    "view_detail_page",
-    "create",
-    "edit",
-    "delete",
-    "export_file",
-  ]),
+  ...generateAccessTemplate("users", ["view_list", "view_detail", "create", "edit", "delete", "export_file"]),
+  ...generateAccessTemplate("roles", ["view_list", "view_detail", "create", "edit", "delete", "export_file"]),
+  ...generateAccessTemplate("access", ["view_list", "view_detail", "create", "edit", "delete", "export_file"]),
 ];
 
 async function main() {
@@ -170,6 +168,7 @@ export async function createUser({
   middle_name,
   last_name,
   roleName,
+  student_id,
 }: {
   email: string;
   username: string;
@@ -178,6 +177,7 @@ export async function createUser({
   middle_name: string | null;
   last_name: string;
   roleName: string;
+  student_id: string;
 }) {
   const role = await prisma.role.findUnique({
     where: { name: roleName },
@@ -191,13 +191,15 @@ export async function createUser({
 
   const credential = await prisma.credential.create({
     data: {
-      username,
+      student_id,
+      access_token: "",
       password: hashedPassword,
     },
   });
 
   const user = await prisma.user.create({
     data: {
+      student_id,
       email,
       first_name,
       middle_name,

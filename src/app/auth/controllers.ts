@@ -1,44 +1,47 @@
-import { Request, Response } from "express";
-import AuthService from "./services";
-import { TLoginSchema } from "./schema";
-import jwt from "jsonwebtoken"
-import bcrypt from "bcrypt"
+import { User } from "@prisma/client";
 import config from "../../lib/config";
+import AuthService from "./services";
+import { Request, Response } from "express";
+import { TLoginSchema } from "./schema";
+import { generateJwtToken, generateOtp } from "../../lib/jwt";
 class AuthController {
   private authService: AuthService = new AuthService();
   constructor() {}
 
   login = async (req: Request, res: Response) => {
-    const body = req.body as TLoginSchema
+    const body = req.body as TLoginSchema;
 
-    if(body.type === 'request-otp') {
-      const user = await this.authService.findByStudentId(body.studentId)
+    if (body.type === "request-otp") {
+      const user = await this.authService.findByStudentId(body.studentId);
 
-      if(!user || !user.id) {
+      if (!user) {
         return res.status(404).json({
           success: false,
-          error: "User Not Found"
-        })
+          error: "User Not Found",
+        });
       }
 
-      const otp = Math.floor(100000 + Math.random() * 900000).toString();
-      const saltRounds = 10
-      const salt = await bcrypt.genSalt(saltRounds)
-      const payload = {
-        email: user.User?.email,
+      const otp = generateOtp();
+
+      const jwtToken = await generateJwtToken({
+        email: user.user?.email!,
         studentId: user.student_id,
-        otp: await bcrypt.hash(otp, salt),
-      }
-      const jwtToken = await jwt.sign(payload, config.JWT_SECRET)
-      await this.authService.updateCredentials(user.student_id, {access_token: jwtToken})
-      
+        otp: otp,
+        jwtSecret: config.JWT_SECRET,
+      });
+
+      await this.authService.updateCredentials(user.student_id, { access_token: jwtToken });
+
+      return res.status(200).json({
+        success: true,
+        jwtToken, // added for test purpose only
+      });
       // TODO: send email with OTP
     }
 
-    if(body.type === 'verify-otp') {
-      
+    if (body.type === "verify-otp") {
     }
-  }
+  };
 
   register = async (req: Request, res: Response) => {
     try {
