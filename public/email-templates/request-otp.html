@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+<head>
+  <title>Request OTP</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" type="text/css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      color: #2b2d42;
+      background-color: #edf2f4;
+      font-family: 'Montserrat', 'Trebuchet MS', sans-serif;
+    }
+    a[x-apple-data-detectors] {
+      color: inherit !important;
+      text-decoration: inherit !important;
+    }
+    #MessageViewBody a {
+      color: inherit;
+      text-decoration: none;
+    }
+    p {
+      line-height: inherit;
+    }
+    .desktop_hide,
+    .desktop_hide table {
+      mso-hide: all;
+      display: none;
+      max-height: 0px;
+      overflow: hidden;
+    }
+    @media (max-width:520px) {
+      .row-content {
+        width: 100% !important;
+      }
+      .stack .column {
+        width: 100%;
+        display: block;
+      }
+    }
+  </style>
+</head>
+
+<body class="body">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+    <tbody>
+      <tr>
+        <td>
+          <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width: 500px; margin: 0 auto; background-color: #ffffff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <tbody>
+              <tr>
+                <td style="padding: 40px 20px 30px 20px; text-align: center;">
+                  <img src="https://d372878b6a.imgdist.com/pub/bfra/nu4imufs/vir/g02/229/cvconnect_logo.png" width="120" alt="CVConnect Logo" style="display:block; margin: 0 auto 30px auto;">
+                  
+                  <h2 style="margin: 0; color: #2b2d42; font-size: 24px; font-weight: 700;">Your One-Time Password (OTP)</h2>
+                  
+                  <p style="margin: 20px 0; font-size: 16px; color: #2b2d42; text-align: left;">
+                    Hi <strong>{{firstName}}</strong>,
+                  </p>
+                  
+                  <p style="margin: 0 0 20px 0; font-size: 16px; text-align: left;">
+                    You requested a One-Time Password (OTP) to verify your email. Please use the code below to continue your request:
+                  </p>
+                  
+                  <div style="margin: 30px 0; text-align: center;">
+                    <div style="display: inline-block; background-color: #2b2d42; color: #ffffff; font-size: 28px; font-weight: 700; letter-spacing: 4px; padding: 15px 30px; border-radius: 8px;">
+                      {{otp}}
+                    </div>
+                  </div>
+                  
+                  <p style="font-size: 15px; text-align: left; margin-bottom: 10px;">
+                    This OTP will expire in <strong>5 minutes</strong>. Please do not share it with anyone for security reasons.
+                  </p>
+                  
+                  <p style="font-size: 15px; text-align: left; margin-top: 30px;">Best regards,</p>
+                  <p style="font-size: 15px; text-align: left; margin: 0;">buslsujuans admin</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table align="center" width="500" border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin: 20px auto 0 auto; text-align: center;">
+            <tbody>
+              <tr>
+                <td style="font-size: 12px; color: #8d99ae; text-align: center;">
+                  © {{year}} bulsujuans. All rights reserved.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

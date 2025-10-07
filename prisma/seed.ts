@@ -1,5 +1,5 @@
 import { PrismaClient, Role, Prisma, User } from "@prisma/client";
-import { hashPassword } from "../src/lib/jwt";
+import { hash } from "../src/lib/jwt";
 const prisma = new PrismaClient();
 
 /* SETUP USER */
@@ -187,12 +187,14 @@ export async function createUser({
     throw new Error(`Role "${roleName}" not found`);
   }
 
-  const hashedPassword = await hashPassword(password);
+  const hashedPassword = await hash(password);
 
   const credential = await prisma.credential.create({
     data: {
       student_id,
+      email,
       access_token: "",
+      refresh_token: "",
       password: hashedPassword,
     },
   });
