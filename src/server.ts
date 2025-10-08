@@ -16,8 +16,8 @@ app.use(
 );
 
 app.use(express.json());
-app.use('/public', express.static('public'));
-app.use('/assets', express.static('public/assets'))
+app.use("/public", express.static("public"));
+app.use("/assets", express.static("public/assets"));
 app.use("/api", apiRouter);
 
 const server = http.createServer(app);

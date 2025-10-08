@@ -28,3 +28,19 @@ export const authenticate = async (req: AuthRequest, res: Response, next: NextFu
     return res.status(401).json({ success: false, message: "Invalid or expired token" });
   }
 };
+
+export const refreshToken = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  const refreshToken = req.body.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(401).json({ success: false, message: "Token missing" });
+  }
+
+  try {
+    const decoded = decodeJwtToken(refreshToken, config.JWT_REFRESH_SECRET);
+    req.user = decoded as JWT;
+    next();
+  } catch (error) {
+    return res.status(401).json({ success: false, message: "Invalid or expired token" });
+  }
+};

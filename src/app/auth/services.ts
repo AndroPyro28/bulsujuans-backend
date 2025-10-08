@@ -1,5 +1,5 @@
 import prisma from "../../lib/prisma";
-import {Prisma} from "@prisma/client";
+import { Prisma } from "@prisma/client";
 class Authhervice {
   constructor() {}
 
@@ -9,8 +9,9 @@ class Authhervice {
         email: email,
       },
       include: {
-        credential: true
-      }
+        credential: true,
+        role: true,
+      },
     });
   };
 
@@ -24,10 +25,7 @@ class Authhervice {
       },
     });
   };
-  public updateCredentials = async (
-    studentId: string,
-    data: Partial<Prisma.CredentialCreateInput>
-  ) => {
+  public updateCredentials = async (studentId: string, data: Partial<Prisma.CredentialCreateInput>) => {
     return await prisma.credential.update({
       where: {
         student_id: studentId,
