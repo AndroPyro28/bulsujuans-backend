@@ -1,5 +1,6 @@
 import "./lib//config/dotenv";
 import express, { Application } from "express";
+import path from "path";
 import cors from "cors";
 import http from "http";
 import { initilizeSocket } from "./lib/utils";
@@ -15,7 +16,8 @@ app.use(
 );
 
 app.use(express.json());
-
+app.use('/public', express.static('public'));
+app.use('/assets', express.static('public/assets'))
 app.use("/api", apiRouter);
 
 const server = http.createServer(app);
