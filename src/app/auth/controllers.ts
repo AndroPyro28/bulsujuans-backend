@@ -75,7 +75,7 @@ class AuthController {
           config.JWT_SECRET
         );
         if (!jwt) {
-          throw new CustomError(StatusCodes.BAD_REQUEST, "Token expired");
+          throw new CustomError(StatusCodes.BAD_REQUEST, "Your OTP has been expired. Please request a new one.");
         }
         if (user.email !== jwt.email || jwt.studentId != user.student_id) {
           throw new CustomError(StatusCodes.BAD_REQUEST, "Invalid Credentials");
@@ -84,7 +84,7 @@ class AuthController {
         if (!isOtpMatched) {
           throw new CustomError(
             StatusCodes.BAD_REQUEST,
-            "Invalid or expired OTP. Please request a new one."
+            "Invalid OTP. Please try again"
           );
         }
         const payload = {
