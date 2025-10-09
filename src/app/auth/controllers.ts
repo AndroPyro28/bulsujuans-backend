@@ -2,22 +2,20 @@ import config from "../../lib/config";
 import AuthService from "./services";
 import { Request, Response } from "express";
 import { TLoginSchema } from "./schema";
-import {
-  compare,
-  decodeJwtToken,
-  generateJwtToken,
-  generateOtp,
-  generateUserToken,
-} from "../../lib/jwt";
+import { compare, decodeJwtToken, generateJwtToken, generateOtp, generateUserToken } from "../../lib/jwt";
 import fs from "fs";
 import sendMail from "../../lib/smtp";
 import Handlebars from "handlebars";
 import { CustomError } from "../../lib/utils";
 import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcrypt";
+import { email } from "zod";
+import { permission } from "process";
+import RoleService from "../roles/services";
 
 class AuthController {
   private authService: AuthService = new AuthService();
+  private roleService: RoleService = new RoleService();
   constructor() {}
 
   login = async (req: Request, res: Response) => {
@@ -70,10 +68,7 @@ class AuthController {
         if (!user || !user.id) {
           throw new CustomError(StatusCodes.NOT_FOUND, "User Not Found");
         }
-        const jwt = decodeJwtToken(
-          user.credential.access_token,
-          config.JWT_SECRET
-        );
+        const jwt = decodeJwtToken(user.credential.access_token, config.JWT_SECRET);
         if (!jwt) {
           throw new CustomError(StatusCodes.BAD_REQUEST, "Your OTP has been expired. Please request a new one.");
         }
@@ -82,10 +77,7 @@ class AuthController {
         }
         const isOtpMatched = await bcrypt.compare(otp, jwt.otp);
         if (!isOtpMatched) {
-          throw new CustomError(
-            StatusCodes.BAD_REQUEST,
-            "Invalid OTP. Please try again"
-          );
+          throw new CustomError(StatusCodes.BAD_REQUEST, "Invalid OTP. Please try again");
         }
         const payload = {
           id: user.id,
@@ -108,7 +100,18 @@ class AuthController {
           access_token: accessToken,
           refresh_token: refreshToken,
         });
+
+        const permission = await this.roleService.getUserAccess(user.email);
+        const permissionCodes = permission.map((p) => p.code);
+
         return res.status(StatusCodes.OK).json({
+          auth: {
+            id: user.id,
+            name: user.first_name,
+            role: user.role.name,
+            email: user.email,
+            permissions: permissionCodes,
+          },
           tokens: {
             accessToken,
             refreshToken,
@@ -125,6 +128,63 @@ class AuthController {
     try {
       // const response = await this.authService.register(req.body);
       return res.status(201).json({});
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ message: "something went wrong..." });
+    }
+  };
+
+  refresh = async (req: Request, res: Response) => {
+    try {
+      const userAuth = req.user;
+
+      const user = await this.authService.findByEmail(userAuth?.email!);
+
+      if (!user || !user.id) {
+        throw new CustomError(StatusCodes.NOT_FOUND, "User Not Found");
+      }
+
+      const payload = {
+        id: user.id,
+        email: user.email,
+        studentId: user.student_id,
+      };
+
+      const [accessToken, refreshToken] = await Promise.all([
+        generateUserToken({
+          ...payload,
+          expiresIn: "15m",
+          jwtSecret: config.JWT_SECRET,
+        }),
+        generateUserToken({
+          ...payload,
+          expiresIn: "1d",
+          jwtSecret: config.JWT_REFRESH_SECRET,
+        }),
+      ]);
+
+      await this.authService.updateCredentials(user.credential.student_id, {
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      });
+
+      const permission = await this.roleService.getUserAccess(user.email);
+      const permissionCodes = permission.map((p) => p.code);
+
+      return res.status(StatusCodes.OK).json({
+        auth: {
+          id: user.id,
+          name: user.first_name,
+          role: user.role.name,
+          email: user.email,
+          permissions: permissionCodes,
+        },
+        tokens: {
+          accessToken,
+          refreshToken,
+        },
+        success: true,
+      });
     } catch (error) {
       console.log(error);
       return res.status(400).json({ message: "something went wrong..." });
