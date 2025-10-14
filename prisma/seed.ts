@@ -61,6 +61,12 @@ const roleData: Prisma.RoleCreateInput[] = [
 ];
 /* SETUP ACCECSS */
 
+const GeneralAccessData: Prisma.AccessCreateInput[] = [
+  ...generateAccessTemplate("services", ["view_list", "view_detail", "create", "edit", "delete"]),
+  ...generateAccessTemplate("news", ["view_list", "view_detail", "create", "edit", "delete"]),
+  ...generateAccessTemplate("emergency", ["view_list", "view_detail", "create", "edit", "delete"]),
+];
+
 const ComplaintAccessData: Prisma.AccessCreateInput[] = [
   ...generateAccessTemplate("complaint", ["view_list", "view_detail", "create", "edit", "delete"]),
 ];
@@ -79,34 +85,45 @@ const AdminAccessData: Prisma.AccessCreateInput[] = [
   ...generateAccessTemplate("access", ["view_list", "view_detail", "create", "edit", "delete", "export_file"]),
 ];
 
-async function main() {
-  /* SETUP ROLE ACCESS */
-  const adminRoleAccess: string[] = [
-    ...AdminAccessData.map((access) => access.code),
-    ...ProfileAccessData.map((access) => access.code),
-    ...ComplaintAccessData.map((access) => access.code),
-    ...TicketAccessData.map((access) => access.code),
-  ];
-  const studentRoleAccess: string[] = [
-    ...ProfileAccessData.map((access) => access.code),
-    ...ComplaintAccessData.map((access) => access.code),
-  ];
-  const teachingstaffRoleAccess: string[] = [
-    ...ProfileAccessData.map((access) => access.code),
-    ...TicketAccessData.map((access) => access.code),
-  ];
-  const nonTeachingstaffRoleAccess: string[] = [
-    ...ProfileAccessData.map((access) => access.code),
-    ...TicketAccessData.map((access) => access.code),
-  ];
+/* SETUP ROLE ACCESS */
+const adminRoleAccess: string[] = [
+  ...AdminAccessData.map((access) => access.code),
+  ...ProfileAccessData.map((access) => access.code),
+  ...ComplaintAccessData.map((access) => access.code),
+  ...TicketAccessData.map((access) => access.code),
+  ...GeneralAccessData.map((access) => access.code),
+];
 
+const teachingstaffRoleAccess: string[] = [
+  ...ProfileAccessData.map((access) => access.code),
+  ...TicketAccessData.map((access) => access.code),
+  ...GeneralAccessData.map((access) => access.code),
+];
+
+const nonTeachingstaffRoleAccess: string[] = [
+  ...ProfileAccessData.map((access) => access.code),
+  ...TicketAccessData.map((access) => access.code),
+  ...["services:view_list", "services:view_detail"],
+  ...["news:view_list", "news:view_detail"],
+  ...["emergency:view_list", "emergency:view_detail"],
+];
+
+const studentRoleAccess: string[] = [
+  ...ProfileAccessData.map((access) => access.code),
+  ...ComplaintAccessData.map((access) => access.code),
+  ...["services:view_list", "services:view_detail"],
+  ...["news:view_list", "news:view_detail"],
+  ...["emergency:view_list", "emergency:view_detail"],
+];
+
+async function main() {
   await prisma.role.createMany({
     data: roleData,
   });
   console.log("ROLE SEEDED");
 
   const access = await prisma.access.createMany({
-    data: [...AdminAccessData, ...ProfileAccessData, ...ComplaintAccessData, ...TicketAccessData],
+    data: [...AdminAccessData, ...ProfileAccessData, ...ComplaintAccessData, ...TicketAccessData, ...GeneralAccessData],
   });
   console.log("ACCESS SEEDED");
 
@@ -217,10 +234,17 @@ export async function createUser({
 }
 
 function generateAccessTemplate(module: string, actions: string[]): Prisma.AccessCreateInput[] {
+  // return actions.map((action) => {
+  //   const code = `${module}:${action.toLowerCase().replace(/\s+/g, "_")}`;
+  //   const name = toTitleCase(`${action} ${module}`);
+  //   const desc = `Allow user to ${action} ${module}`;
+  //   return { code, name, desc };
+  // });
   return actions.map((action) => {
     const code = `${module}:${action.toLowerCase().replace(/\s+/g, "_")}`;
-    const name = toTitleCase(`${action} ${module}`);
-    const desc = `Allow user to ${action} ${module}`;
+    const cleanAction = action.replace(/_/g, " ");
+    const name = toTitleCase(`${cleanAction} ${module}`);
+    const desc = `Allow user to ${cleanAction} ${module}`;
     return { code, name, desc };
   });
 
@@ -228,8 +252,8 @@ function generateAccessTemplate(module: string, actions: string[]): Prisma.Acces
   output example
   [
     {
-      code: "users:view_list_page",
-      name: "View List Page Users",
+      code: "users:view_list",
+      name: "View List  Users",
       desc: "Allow user to view_list_page users"
     },
     {
