@@ -58,13 +58,12 @@ export const decodeJwtToken = (token: string, jwtSecret: string): DecodedToken |
   }
 };
 
-
 interface GenerateUserTokenParams {
   id: string;
   email: string;
   studentId: string;
   jwtSecret: string;
-  expiresIn: "15m" | "1d"; // access token and refresh token
+  expiresIn: "15m" | "1d" | "7d"; // access token and refresh token
 }
 
 export const generateUserToken = async ({
@@ -78,6 +77,6 @@ export const generateUserToken = async ({
     id,
     email,
     studentId,
-  }
+  };
   return jwt.sign(payload, jwtSecret, { expiresIn }); // optional expiration
 };
