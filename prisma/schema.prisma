@@ -41,6 +41,8 @@ model Credential {
   refresh_token String   @db.LongText
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+
+  @@index([student_id, email])
 }
 
 model Role {
@@ -54,6 +56,8 @@ model Role {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   deleted_at DateTime?
+
+  @@index([name])
 }
 
 model Access {
@@ -67,4 +71,84 @@ model Access {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   deleted_at DateTime?
+
+  @@index([code])
+}
+
+model ComplaintStatus {
+  id   String  @id @default(cuid())
+  name String  @unique
+  desc String?
+
+  complaints Complaint[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deleted_at DateTime?
+
+  @@index([name])
+  @@map("complaint_status")
+}
+
+model Complaint {
+  id String @id @default(cuid())
+
+  name                     String
+  contact_number           String
+  alternate_contact_number String?
+  email                    String
+
+  incident_detail  String
+  date_of_incident DateTime
+
+  complaint_status    ComplaintStatus? @relation(fields: [complaint_status_id], references: [id])
+  complaint_status_id String?
+
+  ticket Ticket?
+
+  documents Documents[]
+
+  @@index([complaint_status_id])  
+}
+
+enum TicketStatusEnum {
+  open
+  in_progress
+  resolved
+  closed
+  cancelled
+}
+
+model Ticket {
+  id String @id @default(cuid())
+
+  title       String
+  description String
+
+  status TicketStatusEnum @default(open)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deleted_at DateTime?
+
+  complaint    Complaint? @relation(fields: [complaint_id], references: [id])
+  complaint_id String?    @unique
+
+  @@index([status])
+}
+
+model Documents {
+  id String @id @default(cuid())
+
+  public_url String @db.Text
+  public_id  String @db.Text
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deleted_at DateTime?
+
+  complaint    Complaint? @relation(fields: [complaint_id], references: [id])
+  complaint_id String?
+
+  @@index([complaint_id])
 }
