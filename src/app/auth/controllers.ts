@@ -87,12 +87,12 @@ class AuthController {
         const [accessToken, refreshToken] = await Promise.all([
           generateUserToken({
             ...payload,
-            expiresIn: "15m",
+            expiresIn: "1d",
             jwtSecret: config.JWT_SECRET,
           }),
           generateUserToken({
             ...payload,
-            expiresIn: "1d",
+            expiresIn: "7d",
             jwtSecret: config.JWT_REFRESH_SECRET,
           }),
         ]);
@@ -153,12 +153,12 @@ class AuthController {
       const [accessToken, refreshToken] = await Promise.all([
         generateUserToken({
           ...payload,
-          expiresIn: "15m",
+          expiresIn: "1d",
           jwtSecret: config.JWT_SECRET,
         }),
         generateUserToken({
           ...payload,
-          expiresIn: "1d",
+          expiresIn: "7d",
           jwtSecret: config.JWT_REFRESH_SECRET,
         }),
       ]);

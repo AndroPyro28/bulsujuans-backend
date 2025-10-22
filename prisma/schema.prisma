@@ -35,12 +35,12 @@ model Credential {
   student_id String  @unique
   email      String  @unique
   password   String?
-  user User?
+  user       User?
 
-  access_token String @db.LongText
-  refresh_token String @db.LongText
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  access_token  String   @db.LongText
+  refresh_token String   @db.LongText
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Role {
@@ -50,6 +50,10 @@ model Role {
 
   access Access[]
   user   User?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deleted_at DateTime?
 }
 
 model Access {
@@ -59,4 +63,8 @@ model Access {
   desc String?
 
   roles Role[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deleted_at DateTime?
 }
