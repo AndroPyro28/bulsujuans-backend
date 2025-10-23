@@ -11,10 +11,17 @@ const userData: {
   student_id: string;
 }[] = [
   {
-    email: "doe.admin@gmail.com",
-    first_name: "John",
-    middle_name: "Michael",
-    last_name: "Doe",
+    email: "Menandroeugenio1028@gmail.com",
+    first_name: "Menandro",
+    middle_name: "Santos",
+    last_name: "Eugenio",
+    student_id: "1000",
+  },
+  {
+    email: "jhondeldelconacaranay@gmail.com",
+    first_name: "Johndel",
+    middle_name: "Delicona",
+    last_name: "Caranay",
     student_id: "1001",
   },
   {
@@ -136,10 +143,11 @@ async function main() {
   }
   console.log("ROLE ACCESS SEEDED");
 
-  await createUser({ ...userData[0], roleName: "admin", username: "admin", password: "pass1234" });
-  await createUser({ ...userData[1], roleName: "students", username: "students", password: "pass1234" });
-  await createUser({ ...userData[2], roleName: "teaching staff", username: "teacher", password: "pass1234" });
-  await createUser({ ...userData[3], roleName: "non-teaching staff", username: "nonteacher", password: "pass1234" });
+  await createUser({ ...userData[0], roleName: "admin", username: "andro", password: "pass1234" });
+  await createUser({ ...userData[1], roleName: "admin", username: "jhondel", password: "pass1234" });
+  await createUser({ ...userData[2], roleName: "students", username: "students", password: "pass1234" });
+  await createUser({ ...userData[3], roleName: "teaching staff", username: "teacher", password: "pass1234" });
+  await createUser({ ...userData[4], roleName: "non-teaching staff", username: "nonteacher", password: "pass1234" });
   console.log("USER SEEDED");
 
   console.log("SEED COMPLETED");
