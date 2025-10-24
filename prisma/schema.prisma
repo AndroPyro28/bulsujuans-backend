@@ -20,14 +20,16 @@ model User {
   middle_name String?
   last_name   String?
   student_id  String  @unique
-  role        Role    @relation(fields: [role_id], references: [id])
-  role_id     String  @unique
+  role        Role?   @relation(fields: [role_id], references: [id])
+  role_id     String?
 
   credential    Credential @relation(fields: [credential_id], references: [id])
   credential_id String     @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  Complaint Complaint[]
 }
 
 model Credential {
@@ -51,7 +53,7 @@ model Role {
   desc String?
 
   access Access[]
-  user   User?
+  user   User[]
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
@@ -75,19 +77,14 @@ model Access {
   @@index([code])
 }
 
-model ComplaintStatus {
-  id   String  @id @default(cuid())
-  name String  @unique
-  desc String?
-
-  complaints Complaint[]
-
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  deleted_at DateTime?
-
-  @@index([name])
-  @@map("complaint_status")
+enum ComplaintType {
+  harassment
+  suicide_or_self_injury
+  violence_or_dangerous_organizations
+  nudity_or_sexual_activity
+  selling_or_promoting_of_restricted_items
+  scam_or_fraud
+  other
 }
 
 model Complaint {
@@ -101,14 +98,19 @@ model Complaint {
   incident_detail  String
   date_of_incident DateTime
 
-  complaint_status    ComplaintStatus? @relation(fields: [complaint_status_id], references: [id])
-  complaint_status_id String?
+  complaint_status ComplaintType @default(other)
 
-  ticket Ticket?
+  complainant    User?   @relation(fields: [complainant_id], references: [id])
+  complainant_id String?
 
+  ticket    Ticket?
   documents Documents[]
 
-  @@index([complaint_status_id])  
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deleted_at DateTime?
+
+  @@index([name, complaint_status])
 }
 
 enum TicketStatusEnum {
@@ -127,12 +129,12 @@ model Ticket {
 
   status TicketStatusEnum @default(open)
 
+  complaint    Complaint? @relation(fields: [complaint_id], references: [id])
+  complaint_id String?    @unique
+
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   deleted_at DateTime?
-
-  complaint    Complaint? @relation(fields: [complaint_id], references: [id])
-  complaint_id String?    @unique
 
   @@index([status])
 }
@@ -143,12 +145,12 @@ model Documents {
   public_url String @db.Text
   public_id  String @db.Text
 
+  complaint    Complaint? @relation(fields: [complaint_id], references: [id])
+  complaint_id String?
+
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   deleted_at DateTime?
-
-  complaint    Complaint? @relation(fields: [complaint_id], references: [id])
-  complaint_id String?
 
   @@index([complaint_id])
 }
