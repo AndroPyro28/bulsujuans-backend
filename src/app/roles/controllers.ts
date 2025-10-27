@@ -40,6 +40,10 @@ class RoleController {
       const { id }: { id?: string } = req.params;
       const data = await this.roleService.getRoleById(id);
 
+      if (!data) {
+        throw new CustomError(StatusCodes.BAD_REQUEST, "Role id doesn't exist");
+      }
+
       return res.status(StatusCodes.OK).json({
         data,
         success: true,

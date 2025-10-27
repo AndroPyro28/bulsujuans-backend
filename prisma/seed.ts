@@ -90,6 +90,7 @@ const AdminAccessData: Prisma.AccessCreateInput[] = [
   ...generateAccessTemplate("users", ["view_list", "view_detail", "create", "edit", "delete", "export_file"]),
   ...generateAccessTemplate("roles", ["view_list", "view_detail", "create", "edit", "delete", "export_file"]),
   ...generateAccessTemplate("access", ["view_list", "view_detail", "create", "edit", "delete", "export_file"]),
+  ...generateAccessTemplate("offices", ["view_list", "view_detail", "create", "edit", "delete", "export_file"]),
 ];
 
 /* SETUP ROLE ACCESS */
