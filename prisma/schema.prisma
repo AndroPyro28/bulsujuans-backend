@@ -19,24 +19,29 @@ model User {
   first_name  String?
   middle_name String?
   last_name   String?
-  student_id  String  @unique
+  student_id  String? @unique
   role        Role?   @relation(fields: [role_id], references: [id])
   role_id     String?
 
   credential    Credential @relation(fields: [credential_id], references: [id])
   credential_id String     @unique
 
+  office    Office? @relation(fields: [office_id], references: [id])
+  office_id String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   Complaint Complaint[]
+
+  @@index([email, student_id])
 }
 
 model Credential {
   id         String  @id @default(cuid())
-  student_id String  @unique
+  student_id String? @unique
   email      String  @unique
-  password   String?
+  // password   String?
   user       User?
 
   access_token  String   @db.LongText
@@ -132,11 +137,41 @@ model Ticket {
   complaint    Complaint? @relation(fields: [complaint_id], references: [id])
   complaint_id String?    @unique
 
+  assigned_office    Office? @relation(fields: [assigned_office_id], references: [id])
+  assigned_office_id String?
+
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   deleted_at DateTime?
 
   @@index([status])
+}
+
+enum OfficeType {
+  guidance
+  health_services
+  security
+  discipline
+  student_affairs
+  finance
+  administrative
+}
+
+model Office {
+  id   String  @id @default(cuid())
+  name String  @unique
+  desc String?
+
+  type OfficeType
+
+  ticket Ticket[]
+  users  User[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deleted_at DateTime?
+
+  @@index([name])
 }
 
 model Documents {
