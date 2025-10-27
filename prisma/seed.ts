@@ -1,4 +1,4 @@
-import { PrismaClient, Role, Prisma, User } from "@prisma/client";
+import { PrismaClient, Role, Prisma, User, OfficeType } from "@prisma/client";
 import { hash } from "../src/lib/jwt";
 const prisma = new PrismaClient();
 
@@ -150,8 +150,57 @@ async function main() {
   await createUser({ ...userData[4], roleName: "non-teaching staff", username: "nonteacher", password: "pass1234" });
   console.log("USER SEEDED");
 
+  await prisma.office.createMany({
+    data: complaintTypeOffices.map((office) => ({
+      name: office.name,
+      desc: office.desc,
+      type: office.type,
+    })),
+  });
+
+  console.log("OFFICE SEEDED");
+
   console.log("SEED COMPLETED");
 }
+
+export const complaintTypeOffices = [
+  {
+    type: OfficeType.guidance,
+    name: "Guidance Office",
+    desc: "Handles cases involving bullying, discrimination, and harassment to ensure student welfare and mental well-being.",
+  },
+  {
+    type: OfficeType.health_services,
+    name: "Health Services Office",
+    desc: "Provides immediate mental health support, counseling, and intervention for students showing signs of distress or self-harm.",
+  },
+  {
+    type: OfficeType.security,
+    name: "Security Office",
+    desc: "Ensures campus safety by addressing threats, violence, and activities related to dangerous organizations.",
+  },
+  {
+    type: OfficeType.discipline,
+    name: "Discipline Office",
+    desc: "Oversees violations involving sexual misconduct and indecent behavior to uphold moral and disciplinary standards.",
+  },
+  {
+    type: OfficeType.student_affairs,
+    name: "Student Affairs Office",
+    desc: "Investigates incidents involving the sale or promotion of prohibited goods such as drugs, alcohol, or contraband.",
+  },
+  {
+    type: OfficeType.finance,
+    name: "Finance Office",
+    desc: "Handles reports of financial scams, fraudulent transactions, and misuse of funds related to school activities.",
+  },
+  {
+    type: OfficeType.administrative,
+    name: "Administrative Office",
+    desc: "Manages general complaints that do not fall under specific categories, ensuring proper redirection and resolution.",
+  },
+];
+
 main()
   .then(async () => {
     await prisma.$disconnect();
