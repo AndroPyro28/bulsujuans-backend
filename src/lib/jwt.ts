@@ -19,14 +19,16 @@ interface GenerateJwtTokenParams {
   email: string;
   otp: string;
   jwtSecret: string;
+  userId?: string;
 }
 
-export const generateJwtToken = async ({ email, otp, jwtSecret }: GenerateJwtTokenParams): Promise<string> => {
+export const generateJwtToken = async ({ email, userId, otp, jwtSecret }: GenerateJwtTokenParams): Promise<string> => {
   const saltRounds = 10;
   const salt = await bcrypt.genSalt(saltRounds);
   const hashedOtp = await bcrypt.hash(otp, salt);
   const payload = {
     email,
+    userId,
     otp: hashedOtp,
   };
 
@@ -52,20 +54,20 @@ export const decodeJwtToken = (token: string, jwtSecret: string): DecodedToken |
 };
 
 interface GenerateUserTokenParams {
-  id: string;
+  userId: string;
   email: string;
   jwtSecret: string;
   expiresIn: "15m" | "1d" | "7d"; // access token and refresh token
 }
 
 export const generateUserToken = async ({
-  id,
+  userId,
   email,
   jwtSecret,
   expiresIn,
 }: GenerateUserTokenParams): Promise<string> => {
   const payload = {
-    id,
+    userId,
     email,
   };
   return jwt.sign(payload, jwtSecret, { expiresIn }); // optional expiration

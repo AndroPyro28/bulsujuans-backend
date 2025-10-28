@@ -4,7 +4,7 @@ import { TStoreComplaintSchema, TUpdateComplaintSchema } from "./schema";
 class ComplaintService {
   constructor() {}
 
-  public async getComplaints(search: string, limit: number, offset: number) {
+  public async getComplaints(search: string, limit: number, offset: number, complainant_id?: string) {
     return await prisma.complaint.findMany({
       where: {
         OR: [
@@ -12,6 +12,7 @@ class ComplaintService {
           { email: { contains: search } },
           { incident_detail: { contains: search } },
         ],
+        complainant_id: complainant_id,
         deleted_at: null,
       },
       orderBy: {
@@ -22,7 +23,7 @@ class ComplaintService {
     });
   }
 
-  public async getComplaintsTotal(search: string) {
+  public async getComplaintsTotal(search: string, complainant_id?: string) {
     return await prisma.complaint.count({
       where: {
         OR: [
@@ -30,6 +31,7 @@ class ComplaintService {
           { email: { contains: search } },
           { incident_detail: { contains: search } },
         ],
+        complainant_id: complainant_id,
         deleted_at: null,
       },
     });

@@ -1,6 +1,6 @@
 export type JWT = {
   email: string;
-  studentId: string;
+  userId: string;
   otp: string;
   iat?: number;
   exp?: number;

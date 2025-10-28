@@ -33,6 +33,7 @@ class AuthController {
         const otp = generateOtp();
 
         const jwtToken = await generateJwtToken({
+          userId: user.id,
           email: user?.email!,
           otp: otp,
           jwtSecret: config.JWT_SECRET,
@@ -79,9 +80,8 @@ class AuthController {
           throw new CustomError(StatusCodes.BAD_REQUEST, "Invalid OTP. Please try again");
         }
         const payload = {
-          id: user.id,
+          userId: user.id,
           email: user.email,
-          studentId: user.student_id,
         };
         const [accessToken, refreshToken] = await Promise.all([
           generateUserToken({
@@ -144,7 +144,7 @@ class AuthController {
       }
 
       const payload = {
-        id: user.id,
+        userId: user.id,
         email: user.email,
         studentId: user.student_id,
       };
