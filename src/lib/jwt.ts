@@ -17,23 +17,16 @@ export const compare = async (rawValue: string, hashedValue: string) => {
 
 interface GenerateJwtTokenParams {
   email: string;
-  studentId: string;
   otp: string;
   jwtSecret: string;
 }
 
-export const generateJwtToken = async ({
-  email,
-  studentId,
-  otp,
-  jwtSecret,
-}: GenerateJwtTokenParams): Promise<string> => {
+export const generateJwtToken = async ({ email, otp, jwtSecret }: GenerateJwtTokenParams): Promise<string> => {
   const saltRounds = 10;
   const salt = await bcrypt.genSalt(saltRounds);
   const hashedOtp = await bcrypt.hash(otp, salt);
   const payload = {
     email,
-    studentId,
     otp: hashedOtp,
   };
 
@@ -61,7 +54,6 @@ export const decodeJwtToken = (token: string, jwtSecret: string): DecodedToken |
 interface GenerateUserTokenParams {
   id: string;
   email: string;
-  studentId: string;
   jwtSecret: string;
   expiresIn: "15m" | "1d" | "7d"; // access token and refresh token
 }
@@ -69,14 +61,12 @@ interface GenerateUserTokenParams {
 export const generateUserToken = async ({
   id,
   email,
-  studentId,
   jwtSecret,
   expiresIn,
 }: GenerateUserTokenParams): Promise<string> => {
   const payload = {
     id,
     email,
-    studentId,
   };
   return jwt.sign(payload, jwtSecret, { expiresIn }); // optional expiration
 };

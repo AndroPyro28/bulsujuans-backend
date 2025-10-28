@@ -34,12 +34,11 @@ class AuthController {
 
         const jwtToken = await generateJwtToken({
           email: user?.email!,
-          studentId: user.student_id,
           otp: otp,
           jwtSecret: config.JWT_SECRET,
         });
 
-        await this.authService.updateCredentials(user.credential.student_id, {
+        await this.authService.updateCredentials(user.credential.email, {
           access_token: jwtToken,
         });
 
@@ -96,7 +95,7 @@ class AuthController {
             jwtSecret: config.JWT_REFRESH_SECRET,
           }),
         ]);
-        await this.authService.updateCredentials(user.credential.student_id, {
+        await this.authService.updateCredentials(user.credential.email, {
           access_token: accessToken,
           refresh_token: refreshToken,
         });
@@ -108,7 +107,7 @@ class AuthController {
           auth: {
             id: user.id,
             name: user.first_name,
-            role: user.role.name,
+            role: user.role?.name,
             email: user.email,
             permissions: permissionCodes,
           },
@@ -163,7 +162,7 @@ class AuthController {
         }),
       ]);
 
-      await this.authService.updateCredentials(user.credential.student_id, {
+      await this.authService.updateCredentials(user.credential.email, {
         access_token: accessToken,
         refresh_token: refreshToken,
       });
@@ -175,7 +174,7 @@ class AuthController {
         auth: {
           id: user.id,
           name: user.first_name,
-          role: user.role.name,
+          role: user.role?.name,
           email: user.email,
           permissions: permissionCodes,
         },
