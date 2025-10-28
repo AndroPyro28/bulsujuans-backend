@@ -83,13 +83,13 @@ model Access {
 }
 
 enum ComplaintType {
-  harassment
-  suicide_or_self_injury
-  violence_or_dangerous_organizations
-  nudity_or_sexual_activity
-  selling_or_promoting_of_restricted_items
-  scam_or_fraud
-  other
+  HARASSMENT
+  SUICIDE_OR_SELF_INJURY
+  VIOLENCE_OR_DANGEROUS_ORGANIZATIONS
+  NUDITY_OR_SEXUAL_ACTIVITY
+  SELLING_OR_PROMOTING_OF_RESTRICTED_ITEMS
+  SCAM_OR_FRAUD
+  OTHER
 }
 
 enum ComplaintStatus {
@@ -112,7 +112,7 @@ model Complaint {
   date_of_incident DateTime
 
   complaint_status ComplaintStatus @default(PENDING)
-  complaint_type ComplaintType @default(other)
+  complaint_type   ComplaintType   @default(OTHER)
 
   complainant    User?   @relation(fields: [complainant_id], references: [id])
   complainant_id String?
@@ -128,11 +128,11 @@ model Complaint {
 }
 
 enum TicketStatusEnum {
-  open
-  in_progress
-  resolved
-  closed
-  cancelled
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+  CANCELLED
 }
 
 model Ticket {
@@ -141,7 +141,7 @@ model Ticket {
   title       String
   description String
 
-  status TicketStatusEnum @default(open)
+  status TicketStatusEnum @default(OPEN)
 
   complaint    Complaint? @relation(fields: [complaint_id], references: [id])
   complaint_id String?    @unique
@@ -157,13 +157,13 @@ model Ticket {
 }
 
 enum OfficeType {
-  guidance
-  health_services
-  security
-  discipline
-  student_affairs
-  finance
-  administrative
+  GUIDANCE
+  HEALTH_SERVICES
+  SECURITY
+  DISCIPLINE
+  STUDENT_AFFAIRS
+  FINANCE
+  ADMINISTRATIVE
 }
 
 model Office {

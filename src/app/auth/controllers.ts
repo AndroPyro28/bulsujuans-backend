@@ -33,13 +33,13 @@ class AuthController {
         const otp = generateOtp();
 
         const jwtToken = await generateJwtToken({
+          userId: user.id,
           email: user?.email!,
-          studentId: user.student_id,
           otp: otp,
           jwtSecret: config.JWT_SECRET,
         });
 
-        await this.authService.updateCredentials(user.credential.student_id, {
+        await this.authService.updateCredentials(user.credential.email, {
           access_token: jwtToken,
         });
 
@@ -80,9 +80,8 @@ class AuthController {
           throw new CustomError(StatusCodes.BAD_REQUEST, "Invalid OTP. Please try again");
         }
         const payload = {
-          id: user.id,
+          userId: user.id,
           email: user.email,
-          studentId: user.student_id,
         };
         const [accessToken, refreshToken] = await Promise.all([
           generateUserToken({
@@ -96,7 +95,7 @@ class AuthController {
             jwtSecret: config.JWT_REFRESH_SECRET,
           }),
         ]);
-        await this.authService.updateCredentials(user.credential.student_id, {
+        await this.authService.updateCredentials(user.credential.email, {
           access_token: accessToken,
           refresh_token: refreshToken,
         });
@@ -108,7 +107,7 @@ class AuthController {
           auth: {
             id: user.id,
             name: user.first_name,
-            role: user.role.name,
+            role: user.role?.name,
             email: user.email,
             permissions: permissionCodes,
           },
@@ -145,7 +144,7 @@ class AuthController {
       }
 
       const payload = {
-        id: user.id,
+        userId: user.id,
         email: user.email,
         studentId: user.student_id,
       };
@@ -163,7 +162,7 @@ class AuthController {
         }),
       ]);
 
-      await this.authService.updateCredentials(user.credential.student_id, {
+      await this.authService.updateCredentials(user.credential.email, {
         access_token: accessToken,
         refresh_token: refreshToken,
       });
@@ -175,7 +174,7 @@ class AuthController {
         auth: {
           id: user.id,
           name: user.first_name,
-          role: user.role.name,
+          role: user.role?.name,
           email: user.email,
           permissions: permissionCodes,
         },

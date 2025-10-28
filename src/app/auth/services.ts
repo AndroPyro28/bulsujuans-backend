@@ -25,10 +25,11 @@ class Authhervice {
       },
     });
   };
-  public updateCredentials = async (studentId: string, data: Partial<Prisma.CredentialCreateInput>) => {
+
+  public updateCredentials = async (email: string, data: Partial<Prisma.CredentialCreateInput>) => {
     return await prisma.credential.update({
       where: {
-        student_id: studentId,
+        email: email,
       },
       data,
     });

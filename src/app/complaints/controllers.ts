@@ -19,9 +19,10 @@ class ComplaintController {
       const limit = parseInt(req.query.limit as string) || 10;
       const search = (req.query.search as string) || "";
       const offset = (page - 1) * limit;
+      const complainant_id = (req.query.complainant_id as string) || undefined;
 
-      const data = await this.complaintService.getComplaints(search, limit, offset);
-      const total = await this.complaintService.getComplaintsTotal(search);
+      const data = await this.complaintService.getComplaints(search, limit, offset, complainant_id);
+      const total = await this.complaintService.getComplaintsTotal(search, complainant_id);
 
       return res.status(StatusCodes.OK).json({
         data: data,
@@ -87,6 +88,7 @@ class ComplaintController {
         message: "Complaint Created Successfully",
       });
     } catch (error) {
+      console.log("🚀 ~ ComplaintController ~ error:", error);
       throw new CustomError(StatusCodes.INTERNAL_SERVER_ERROR, "Server Error. Failed to create complaint");
     }
   };
