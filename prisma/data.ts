@@ -211,37 +211,37 @@ export const studentRoleAccess: string[] = [
 
 export const officeData = [
   {
-    type: OfficeType.guidance,
+    type: OfficeType.GUIDANCE,
     name: "Guidance Office",
     desc: "Handles cases involving bullying, discrimination, and harassment to ensure student welfare and mental well-being.",
   },
   {
-    type: OfficeType.health_services,
+    type: OfficeType.HEALTH_SERVICES,
     name: "Health Services Office",
     desc: "Provides immediate mental health support, counseling, and intervention for students showing signs of distress or self-harm.",
   },
   {
-    type: OfficeType.security,
+    type: OfficeType.SECURITY,
     name: "Security Office",
     desc: "Ensures campus safety by addressing threats, violence, and activities related to dangerous organizations.",
   },
   {
-    type: OfficeType.discipline,
+    type: OfficeType.DISCIPLINE,
     name: "Discipline Office",
     desc: "Oversees violations involving sexual misconduct and indecent behavior to uphold moral and disciplinary standards.",
   },
   {
-    type: OfficeType.student_affairs,
+    type: OfficeType.STUDENT_AFFAIRS,
     name: "Student Affairs Office",
     desc: "Investigates incidents involving the sale or promotion of prohibited goods such as drugs, alcohol, or contraband.",
   },
   {
-    type: OfficeType.finance,
+    type: OfficeType.FINANCE,
     name: "Finance Office",
     desc: "Handles reports of financial scams, fraudulent transactions, and misuse of funds related to school activities.",
   },
   {
-    type: OfficeType.administrative,
+    type: OfficeType.ADMINISTRATIVE,
     name: "Administrative Office",
     desc: "Manages general complaints that do not fall under specific categories, ensuring proper redirection and resolution.",
   },
