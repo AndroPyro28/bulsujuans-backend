@@ -1,3 +1,4 @@
+import { ComplaintType } from "@prisma/client";
 import { z } from "zod";
 
 export const storeComplaintSchema = z.object({
@@ -14,13 +15,14 @@ export const storeComplaintSchema = z.object({
     .min(1, "Incident Detail must be at least 1 character")
     .max(500, "Incident Detail must be at most 500 characters"),
   date_of_incident: z.coerce.date("Date of Incident is required"),
+  complaint_type: z.enum(ComplaintType),
 
   complainant_id: z
     .string("Complainant ID is required")
     .min(1, "Complainant ID must be at least 1 character")
     .max(255, "Complainant ID must be at most 255 characters"),
-});
 
+});
 export type TStoreComplaintSchema = z.infer<typeof storeComplaintSchema>;
 
 export const updateComplaintSchema = storeComplaintSchema.partial();
