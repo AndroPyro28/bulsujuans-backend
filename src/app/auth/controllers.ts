@@ -72,7 +72,7 @@ class AuthController {
         if (!jwt) {
           throw new CustomError(StatusCodes.BAD_REQUEST, "Your OTP has been expired. Please request a new one.");
         }
-        if (user.email !== jwt.email || jwt.studentId != user.student_id) {
+        if (user.email !== jwt.email) {
           throw new CustomError(StatusCodes.BAD_REQUEST, "Invalid Credentials");
         }
         const isOtpMatched = await bcrypt.compare(otp, jwt.otp);
