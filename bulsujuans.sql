@@ -280,19 +280,19 @@ INSERT INTO `user` (`id`, `email`, `first_name`, `middle_name`, `last_name`, `st
 -- --------------------------------------------------------
 
 --
--- Table structure for table `_accesstorole`
+-- Table structure for table `_AccessToRole`
 --
 
-CREATE TABLE `_accesstorole` (
+CREATE TABLE `_AccessToRole` (
   `A` varchar(191) NOT NULL,
   `B` varchar(191) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `_accesstorole`
+-- Dumping data for table `_AccessToRole`
 --
 
-INSERT INTO `_accesstorole` (`A`, `B`) VALUES
+INSERT INTO `_AccessToRole` (`A`, `B`) VALUES
 ('cmhkf8bgu0004waycw3fg1slq', 'cmhkf8bdl0000waycjnmxoz6a'),
 ('cmhkf8bgu0005wayc9lmbhcbw', 'cmhkf8bdl0000waycjnmxoz6a'),
 ('cmhkf8bgu0006wayc9itvws90', 'cmhkf8bdl0000waycjnmxoz6a'),
@@ -471,9 +471,9 @@ ALTER TABLE `user`
   ADD KEY `User_office_id_fkey` (`office_id`);
 
 --
--- Indexes for table `_accesstorole`
+-- Indexes for table `_AccessToRole`
 --
-ALTER TABLE `_accesstorole`
+ALTER TABLE `_AccessToRole`
   ADD UNIQUE KEY `_AccessToRole_AB_unique` (`A`,`B`),
   ADD KEY `_AccessToRole_B_index` (`B`);
 
@@ -509,9 +509,9 @@ ALTER TABLE `user`
   ADD CONSTRAINT `User_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `_accesstorole`
+-- Constraints for table `_AccessToRole`
 --
-ALTER TABLE `_accesstorole`
+ALTER TABLE `_AccessToRole`
   ADD CONSTRAINT `_AccessToRole_A_fkey` FOREIGN KEY (`A`) REFERENCES `access` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `_AccessToRole_B_fkey` FOREIGN KEY (`B`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
