@@ -49,7 +49,7 @@ import sgMail from "@sendgrid/mail";
 
 sgMail.setApiKey(config.SENDGRID_API_KEY);
 
-export async function sendMail ({
+async function sendMail ({
   subject,
   content,
   emailTo,
@@ -72,3 +72,5 @@ export async function sendMail ({
     console.error("❌ SendGrid error:", err.response?.body || err);
   }
 }
+
+export default sendMail
