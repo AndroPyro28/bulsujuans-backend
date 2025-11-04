@@ -22,7 +22,7 @@ export const authenticate = async (req: AuthRequest, res: Response, next: NextFu
 
   try {
     const decoded = decodeJwtToken(token, config.JWT_SECRET);
-    req.user = decoded as JWT;
+    req.user = decoded as JWT | any;
     next();
   } catch (error) {
     return res.status(401).json({ success: false, message: "Invalid or expired token" });
@@ -38,7 +38,7 @@ export const refreshToken = async (req: AuthRequest, res: Response, next: NextFu
 
   try {
     const decoded = decodeJwtToken(refreshToken, config.JWT_REFRESH_SECRET);
-    req.user = decoded as JWT;
+    req.user = decoded as JWT | any;
     next();
   } catch (error) {
     return res.status(401).json({ success: false, message: "Invalid or expired token" });
