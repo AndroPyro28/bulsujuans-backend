@@ -35,6 +35,7 @@ model User {
   Complaint Complaint[]
 
   @@index([email, student_id])
+  @@map("user")
 }
 
 model Credential {
@@ -50,6 +51,7 @@ model Credential {
   updatedAt     DateTime @updatedAt
 
   @@index([student_id, email])
+  @@map("credential")
 }
 
 model Role {
@@ -65,6 +67,8 @@ model Role {
   deleted_at DateTime?
 
   @@index([name])
+  @@map("role")
+
 }
 
 model Access {
@@ -80,6 +84,7 @@ model Access {
   deleted_at DateTime?
 
   @@index([code])
+  @@map("access")
 }
 
 enum ComplaintType {
@@ -125,6 +130,7 @@ model Complaint {
   deleted_at DateTime?
 
   @@index([name, complaint_type])
+  @@map("complaint")
 }
 
 enum TicketStatusEnum {
@@ -154,6 +160,7 @@ model Ticket {
   deleted_at DateTime?
 
   @@index([status])
+  @@map("ticket")
 }
 
 enum OfficeType {
@@ -181,6 +188,7 @@ model Office {
   deleted_at DateTime?
 
   @@index([name])
+  @@map("office")
 }
 
 model Documents {
@@ -197,4 +205,5 @@ model Documents {
   deleted_at DateTime?
 
   @@index([complaint_id])
+  @@map("documents")
 }
