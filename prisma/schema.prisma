@@ -68,7 +68,6 @@ model Role {
 
   @@index([name])
   @@map("role")
-
 }
 
 model Access {
