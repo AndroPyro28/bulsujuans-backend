@@ -33,6 +33,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   Complaint Complaint[]
+  news      News[]
 
   @@index([email, student_id])
   @@map("user")
@@ -205,4 +206,31 @@ model Documents {
 
   @@index([complaint_id])
   @@map("documents")
+}
+
+enum NewsCategory {
+  EDUCATION
+  ANNOUNCEMENT
+  JOBS
+  CAMPUS_NOTICE
+  HEALTH_AND_WELLNESS
+  ADMISSIONS
+}
+
+model News {
+  id String @id @default(cuid())
+
+  title  String
+  source String
+
+  content String @db.Text
+
+  category NewsCategory
+
+  posted_by    User?   @relation(fields: [posted_by_id], references: [id])
+  posted_by_id String? @unique
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deleted_at DateTime?
 }
