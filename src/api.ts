@@ -5,6 +5,7 @@ import roleRoutes from "./app/roles/routes";
 import officeRoutes from "./app/offices/routes";
 import complaintRoutes from "./app/complaints/routes";
 import ticketRoutes from "./app/tickets/routes";
+import newsRoutes from "./app/news/routes";
 import authRoutes from "./app/auth/routes";
 import { authenticate } from "./middlewares/authenticate";
 import errorHandler from "./middlewares/error-handler";
@@ -15,6 +16,7 @@ apiRouter.use("/roles", authenticate, roleRoutes);
 apiRouter.use("/complaints", authenticate, complaintRoutes);
 apiRouter.use("/tickets", authenticate, ticketRoutes);
 apiRouter.use("/offices", authenticate, officeRoutes);
+apiRouter.use("/news", authenticate, newsRoutes);
 apiRouter.use("/auth", authRoutes);
 apiRouter.use(errorHandler);
 
