@@ -1,3 +1,4 @@
+import { TicketStatusEnum } from "@prisma/client";
 import { z } from "zod";
 
 export const storeTicketSchema = z.object({
@@ -13,6 +14,9 @@ export const storeTicketSchema = z.object({
     .string("Complainant ID is required")
     .min(1, "Complainant ID must be at least 1 character")
     .max(255, "Complainant ID must be at most 255 characters"),
+  status: z
+    .enum(TicketStatusEnum, `Ticket status must be one of: ${Object.values(TicketStatusEnum).join(", ")}`)
+    .optional(),
 });
 
 export type TStoreTicketSchema = z.infer<typeof storeTicketSchema>;

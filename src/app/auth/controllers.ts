@@ -2,13 +2,7 @@ import config from "../../lib/config";
 import AuthService from "./services";
 import { Request, Response } from "express";
 import { TLoginSchema } from "./schema";
-import {
-  compare,
-  decodeJwtToken,
-  generateJwtToken,
-  generateOtp,
-  generateUserToken,
-} from "../../lib/jwt";
+import { compare, decodeJwtToken, generateJwtToken, generateOtp, generateUserToken } from "../../lib/jwt";
 import fs from "fs";
 import sendMail from "../../lib/smtp";
 import Handlebars from "handlebars";
@@ -37,6 +31,7 @@ class AuthController {
         }
 
         const otp = generateOtp();
+        console.log("🚀 ~ AuthController ~ otp:", otp);
 
         const jwtToken = await generateJwtToken({
           userId: user.id,
@@ -74,25 +69,16 @@ class AuthController {
         if (!user || !user.id) {
           throw new CustomError(StatusCodes.NOT_FOUND, "User Not Found");
         }
-        const jwt = decodeJwtToken(
-          user.credential.access_token,
-          config.JWT_SECRET
-        );
+        const jwt = decodeJwtToken(user.credential.access_token, config.JWT_SECRET);
         if (!jwt) {
-          throw new CustomError(
-            StatusCodes.BAD_REQUEST,
-            "Your OTP has been expired. Please request a new one."
-          );
+          throw new CustomError(StatusCodes.BAD_REQUEST, "Your OTP has been expired. Please request a new one.");
         }
         if (user.email !== jwt.email) {
           throw new CustomError(StatusCodes.BAD_REQUEST, "Invalid Credentials");
         }
         const isOtpMatched = await bcrypt.compare(otp, jwt.otp);
         if (!isOtpMatched) {
-          throw new CustomError(
-            StatusCodes.BAD_REQUEST,
-            "Invalid OTP. Please try again"
-          );
+          throw new CustomError(StatusCodes.BAD_REQUEST, "Invalid OTP. Please try again");
         }
         const payload = {
           userId: user.id,
