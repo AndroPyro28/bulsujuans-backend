@@ -43,7 +43,7 @@ class ComplaintController {
   show = async (req: Request, res: Response) => {
     try {
       const { id }: { id?: string } = req.params;
-      const data = await this.complaintService.getComplaintById(id);
+      const data = await this.complaintService.getComplaintById(id, { withDocuments: true, withTickets: true });
 
       return res.status(StatusCodes.OK).json({
         data,
@@ -64,7 +64,7 @@ class ComplaintController {
 
       if (data) {
         await this.ticketService.createTicket({
-          title: `Complaint #${data.id} - Status: ${data.complaint_status}`,
+          title: `Complaint #${data.id}`,
           description: data.incident_detail,
           complaint_id: data.id,
         });

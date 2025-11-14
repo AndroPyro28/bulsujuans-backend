@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -46,8 +46,8 @@ model Credential {
   // password   String?
   user       User?
 
-  access_token  String   @db.LongText
-  refresh_token String   @db.LongText
+  access_token  String   @db.Text
+  refresh_token String   @db.Text
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -97,14 +97,6 @@ enum ComplaintType {
   OTHER
 }
 
-enum ComplaintStatus {
-  PENDING
-  ACCEPTED
-  ONGOING
-  REJECTED
-  COMPLETED
-}
-
 model Complaint {
   id String @id @default(cuid())
 
@@ -116,8 +108,7 @@ model Complaint {
   incident_detail  String
   date_of_incident DateTime
 
-  complaint_status ComplaintStatus @default(PENDING)
-  complaint_type   ComplaintType   @default(OTHER)
+  complaint_type ComplaintType @default(OTHER)
 
   complainant    User?   @relation(fields: [complainant_id], references: [id])
   complainant_id String?
@@ -134,11 +125,9 @@ model Complaint {
 }
 
 enum TicketStatusEnum {
-  OPEN
-  IN_PROGRESS
+  PENDING
   RESOLVED
-  CLOSED
-  CANCELLED
+  REJECTED
 }
 
 model Ticket {
@@ -147,7 +136,7 @@ model Ticket {
   title       String
   description String
 
-  status TicketStatusEnum @default(OPEN)
+  status TicketStatusEnum @default(PENDING)
 
   complaint    Complaint? @relation(fields: [complaint_id], references: [id])
   complaint_id String?    @unique
