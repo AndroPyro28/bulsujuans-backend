@@ -18,6 +18,9 @@ class ComplaintService {
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        ticket: true,
+      },
       take: limit,
       skip: offset,
     });
@@ -37,13 +40,20 @@ class ComplaintService {
     });
   }
 
-  public async getComplaintById(id: string) {
+  public async getComplaintById(
+    id: string,
+    includes: { withDocuments?: boolean; withTickets?: boolean } = { withDocuments: false, withTickets: false }
+  ) {
     return await prisma.complaint.findFirst({
       where: {
         id: {
           equals: id,
         },
         deleted_at: null,
+      },
+      include: {
+        documents: includes.withDocuments,
+        ticket: includes.withTickets,
       },
     });
   }

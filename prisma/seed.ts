@@ -20,6 +20,7 @@ const prisma = new PrismaClient();
 async function main() {
   await prisma.role.createMany({
     data: roleData,
+    skipDuplicates: true,
   });
   console.log("ROLE SEEDED");
 
