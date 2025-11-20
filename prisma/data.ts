@@ -195,7 +195,7 @@ export const teachingstaffRoleAccess: string[] = [
 
 export const nonTeachingstaffRoleAccess: string[] = [
   ...ProfileAccessData.map((access) => access.code),
-  ...TicketAccessData.map((access) => access.code),
+  // ...TicketAccessData.map((access) => access.code),
   ...["services:view_list", "services:view_detail"],
   ...["news:view_list", "news:view_detail"],
   ...["emergency:view_list", "emergency:view_detail"],

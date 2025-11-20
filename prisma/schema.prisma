@@ -126,6 +126,9 @@ model Complaint {
 
 enum TicketStatusEnum {
   PENDING
+  UNDER_REVIEW
+  BEING_STUDIED
+  BEING_PROCESS
   RESOLVED
   REJECTED
 }
