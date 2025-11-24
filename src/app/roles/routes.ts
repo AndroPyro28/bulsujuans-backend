@@ -8,10 +8,10 @@ const router: Router = Router();
 
 const roleController = new RoleController();
 
-router.get("/list", hasAllPermission(["users:view_list"]), roleController.list);
-router.get("/show/:id", hasAllPermission(["users:view_detail"]), roleController.show);
-router.post("/store", hasAllPermission(["users:create"]), validate(storeRoleSchema), roleController.store);
-router.patch("/update/:id", hasAllPermission(["users:edit"]), validate(updateRoleSchema), roleController.update);
-router.delete("/destroy/:id", hasAllPermission(["users:delete"]), roleController.destroy);
+router.get("/list", hasAllPermission(["roles:view_list"]), roleController.list);
+router.get("/show/:id", hasAllPermission(["roles:view_detail"]), roleController.show);
+router.post("/store", hasAllPermission(["roles:create"]), validate(storeRoleSchema), roleController.store);
+router.patch("/update/:id", hasAllPermission(["roles:edit"]), validate(updateRoleSchema), roleController.update);
+router.delete("/destroy/:id", hasAllPermission(["roles:delete"]), roleController.destroy);
 
 export default router;
