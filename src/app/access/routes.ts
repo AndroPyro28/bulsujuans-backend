@@ -1,0 +1,17 @@
+import { Router } from "express";
+import AccessController from "./controllers";
+import { hasAllPermission } from "../../middlewares/permission";
+import validate from "../../lib/zod-validator";
+// import { storeAccessSchema, updateAccessSchema } from "./schema";
+
+const router: Router = Router();
+
+const accessController = new AccessController();
+
+router.get("/list", hasAllPermission(["access:view_list"]), accessController.list);
+// router.get("/show/:id", hasAllPermission(["access:view_detail"]), accessController.show);
+// router.post("/store", hasAllPermission(["users:create"]), validate(storeAccessSchema), accessController.store);
+// router.patch("/update/:id", hasAllPermission(["users:edit"]), validate(updateAccessSchema), accessController.update);
+// router.delete("/destroy/:id", hasAllPermission(["users:delete"]), accessController.destroy);
+
+export default router;

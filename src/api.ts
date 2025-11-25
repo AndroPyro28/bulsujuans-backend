@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import userRoutes from "./app/users/routes";
 import roleRoutes from "./app/roles/routes";
+import accessRoutes from "./app/access/routes";
 import officeRoutes from "./app/offices/routes";
 import complaintRoutes from "./app/complaints/routes";
 import ticketRoutes from "./app/tickets/routes";
@@ -13,6 +14,7 @@ import errorHandler from "./middlewares/error-handler";
 const apiRouter = Router();
 apiRouter.use("/users", userRoutes);
 apiRouter.use("/roles", authenticate, roleRoutes);
+apiRouter.use("/access", authenticate, accessRoutes);
 apiRouter.use("/complaints", authenticate, complaintRoutes);
 apiRouter.use("/tickets", authenticate, ticketRoutes);
 apiRouter.use("/offices", authenticate, officeRoutes);
