@@ -1,6 +1,10 @@
 import { z } from "zod";
 
 export const storeAccessSchema = z.object({
+  code: z
+    .string("Code is required")
+    .min(1, "Code must be at least 1 character")
+    .max(30, "Code must be at most 20 characters"),
   name: z
     .string("Name is required")
     .min(1, "Name must be at least 1 character")
