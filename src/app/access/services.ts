@@ -3,6 +3,24 @@ import { TStoreAccessSchema, TUpdateAccessSchema } from "./schema";
 class AccessService {
   constructor() {}
 
+  public async getAccessOptions(role_id?: string) {
+    return await prisma.access.findMany({
+      where: {
+        deleted_at: null,
+        roles: {
+          none: { id: role_id },
+        },
+      },
+      orderBy: {
+        name: "asc",
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+  }
+
   public async getAccesss(search: string, limit: number, offset: number, role_id?: string) {
     return await prisma.access.findMany({
       where: {
@@ -90,6 +108,18 @@ class AccessService {
       data: {
         access: {
           disconnect: { id: access_id },
+        },
+      },
+      include: { access: true },
+    });
+  }
+
+  public async addRoleAccess(role_id: string, access_id: string) {
+    return await prisma.role.update({
+      where: { id: role_id },
+      data: {
+        access: {
+          connect: { id: access_id },
         },
       },
       include: { access: true },

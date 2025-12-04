@@ -15,3 +15,10 @@ export type TStoreAccessSchema = z.infer<typeof storeAccessSchema>;
 
 export const updateAccessSchema = storeAccessSchema.partial();
 export type TUpdateAccessSchema = z.infer<typeof updateAccessSchema>;
+
+export const addAccessSchema = z.object({
+  role_id: z.string("Role id is required"),
+  access_id: z.string("Access id is required"),
+});
+
+export type TAddAccessSchema = z.infer<typeof addAccessSchema>;
