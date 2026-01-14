@@ -107,7 +107,7 @@ class AuthController {
         return res.status(StatusCodes.OK).json({
           auth: {
             id: user.id,
-            name: user.first_name,
+            name: `${user.first_name} ${user.last_name}`,
             role: user.role?.name,
             email: user.email,
             permissions: permissionCodes,
@@ -188,7 +188,7 @@ class AuthController {
       return res.status(StatusCodes.OK).json({
         auth: {
           id: user.id,
-          name: user.first_name,
+          name: `${user.first_name} ${user.last_name}`,
           role: user.role?.name,
           email: user.email,
           permissions: permissionCodes,
