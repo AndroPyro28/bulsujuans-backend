@@ -254,7 +254,7 @@ model Education {
 
   degree      String
   institution String
-  description String
+  description String? @db.Text
   year        Int
 
   createdAt  DateTime  @default(now())
