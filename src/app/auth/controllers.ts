@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import { TLoginSchema } from "./schema";
 import { compare, decodeJwtToken, generateJwtToken, generateOtp, generateUserToken } from "../../lib/jwt";
 import fs from "fs";
-import sendMail from "../../lib/smtp";
+// import sendMail from "../../lib/smtp";
 import Handlebars from "handlebars";
 import { CustomError } from "../../lib/utils";
 import { StatusCodes } from "http-status-codes";
@@ -12,6 +12,7 @@ import bcrypt from "bcrypt";
 import { email } from "zod";
 import { permission } from "process";
 import RoleService from "../roles/services";
+import { sendMail } from "../../lib/mailer";
 
 class AuthController {
   private authService: AuthService = new AuthService();

@@ -2,12 +2,12 @@ import nodemailer from "nodemailer";
 import config from "./config";
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+  host: "smtp-relay.brevo.com",
   port: 587,
   secure: false,
   auth: {
-    user: config.NODEMAILER_GMAIL,
-    pass: config.NODEMAILER_PASSWORD,
+    user: config.BREVO_SMTP_USER, // usually "apikey"
+    pass: config.BREVO_SMTP_KEY, // your Brevo SMTP key
   },
 });
 
@@ -22,16 +22,16 @@ export const sendMail = async ({
 }) => {
   try {
     const info = await transporter.sendMail({
-      from: `"Bulsujuans" <${config.NODEMAILER_GMAIL}>`,
+      from: `Bulsujuans <${config.MAIL_FROM}>`,
       to: emailTo,
       subject,
       html: content,
     });
 
-    console.log("Email sent:", info.messageId);
+    console.log("Email sent via Brevo:", info.messageId);
     return true;
   } catch (error) {
-    console.error("Email error:", error);
+    console.error("Brevo email error:", error);
     return false;
   }
 };

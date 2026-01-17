@@ -12,7 +12,10 @@ const envSchema = z.object({
   CLOUDINARY_API_KEY: z.string().min(1, "CLOUDINARY_API_KEY is required"),
   CLOUDINARY_API_SECRET: z.string().min(1, "CLOUDINARY_API_SECRET is required"),
   SENDGRID_API_KEY: z.string().min(1, "CLOUDINARY_API_SECRET is required"),
-  
+
+  BREVO_SMTP_USER: z.string().min(1, "CLOUDINARY_API_SECRET is required"),
+  BREVO_SMTP_KEY: z.string().min(1, "CLOUDINARY_API_SECRET is required"),
+  MAIL_FROM: z.string().min(1, "CLOUDINARY_API_SECRET is required"),
 });
 
 const env = envSchema.safeParse(process.env);
