@@ -40,6 +40,25 @@ export const userData: {
     office_name: office_names.administrative,
   },
   {
+    /* ADMIN 3 */
+    email: "heralatrina+admin@gmail.com",
+    first_name: "Trina",
+    middle_name: "Cruz",
+    last_name: "Heralta",
+    roleName: "admin",
+    office_name: office_names.administrative,
+  },
+  {
+    /* REGULAR STUDENT */
+    email: "heralatrina+student@gmail.com",
+    first_name: "Trina",
+    middle_name: "Cruz",
+    last_name: "Heralta",
+    student_id: "1000",
+    roleName: "students",
+    office_name: undefined,
+  },
+  {
     /* REGULAR STUDENT */
     email: "student1@example.com",
     first_name: "Lara",
